@@ -4,6 +4,7 @@ interface IProduct extends Document {
     name: string;
     price: number;
     description: string;
+    category?: string;
     discount?: number;
     event?: string;
 }
@@ -20,6 +21,9 @@ const productSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true
+    },
+    category: {
+        type: String,
     },
     discount: {
         type: Number,
