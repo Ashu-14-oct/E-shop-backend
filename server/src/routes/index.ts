@@ -3,18 +3,18 @@ import { categoryProduct, createProduct, productEvent, searchedProduct, updatePr
 import { validateProduct } from "../middleware/validateBody";
 const router = Router();
 
-router.post('/product/create-product', validateProduct,createProduct);
+router.post('/create-product', validateProduct,createProduct);
 
 // get product with a specific event
-router.get('/product/:event', productEvent);
+router.get('/:event', productEvent);
 
 // searched product
-router.get('/product/item/:searched', searchedProduct);
+router.get('/item/:searched', searchedProduct);
 
 // categories product
-router.get('/product/category/:item', categoryProduct);
+router.get('/category/:item', categoryProduct);
 
 // update a product
-router.patch('/product/update/:id', updateProduct);
+router.patch('/update/:id', updateProduct);
 
 export default router;
