@@ -46,17 +46,17 @@ export const signIn = async (req: Request, res:Response) => {
         if(!user){
             return res.status(404).json({message: "User with this email not found. Try sign up"});
         }
-        const checkPassword = bcrypt.compare(user.password, password);
+        console.log(user.password, password);
+        
+        const checkPassword = await bcrypt.compare(password, user.password);
         if(!checkPassword){
             return res.status(400).json({message: "Wrong password or email"});
         }
-
-        console.log(process.env.JWT_KEY);
         
         const token = jwt.sign({_id: user._id}, process.env.JWT_KEY || '');
 
         return res.status(200).json({message: "Signed in successfully",token});
-        
+
     } catch (error) {
         console.log("Something went wrong while sign in", error);
         return res.status(500).json({message: "Internal server error"});
