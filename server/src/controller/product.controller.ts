@@ -51,7 +51,7 @@ export const searchedProduct = async (req: Request, res: Response) => {
         const searchTerm = searched.trim().toLowerCase();
 
         const product = await Product.find({ name: { $regex: new RegExp(searchTerm, 'i') } });
-        if(!product){
+        if(product.length === 0){
             return res.status(404).json({message: `No search results found related to ${searched}`});
         }
 
@@ -85,7 +85,7 @@ export const updateProduct = async (req: Request, res: Response) => {
             return res.status(400).json({ message: 'Invalid product ID' });
         }
         const updatedProduct = await Product.findByIdAndUpdate(id, update, {new: true});
-        return res.status(200).json({mesaage: "updated successfully", updatedProduct});
+        return res.status(200).json({message: "updated successfully", updatedProduct});
     } catch (error) {
         console.log(error);
         return res.status(500).json({message: "Internal server error"});
