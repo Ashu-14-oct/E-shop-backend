@@ -58,7 +58,7 @@ export const signIn = async (req: Request, res:Response) => {
             return res.status(400).json({message: "Wrong password or email"});
         }
         
-        const token = jwt.sign({_id: user._id}, process.env.JWT_KEY || '');
+        const token = jwt.sign({_id: user._id}, process.env.JWT_KEY || '', { expiresIn: '1h' });
 
         return res.status(200).json({message: "Signed in successfully",token});
 

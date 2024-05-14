@@ -8,4 +8,5 @@ const userR = Router();
 userR.post("/sign-up", validateUser,signup);
 userR.post("/sign-in", signIn);
 
+
 export default userR;
