@@ -5,6 +5,7 @@ import express from "express";
 import router from "./routes";
 import "./config/mongoose";
 import userR from "./routes/userRoute";
+import "./middleware/redis";
 
 const PORT = 3000;
 const app = express();

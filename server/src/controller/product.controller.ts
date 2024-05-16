@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import mongoose from "mongoose";
 import Product from "../model/product.model";
 import { validationResult } from "express-validator";
+import redisClient from "../middleware/redis";
 
 
 // product creation endpoint
@@ -34,8 +35,25 @@ export const createProduct =  async (req: Request, res: Response) => {
 // product with a specific event
 export const productEvent = async (req: Request, res: Response) => {
     try {
+        const start = Date.now(); //for checking ms
         const {event} = req.params;
+
+        // redis
+        const cacheKey = `productEvent${event}`;
+        const cacheData = await redisClient.get(cacheKey);
+        
+        if(cacheData){
+            const end = Date.now();
+            console.log(`Response time: ${end - start} ms`); // Log the response time
+            return res.status(200).json({cacheData});
+        }
+
+        // if products are not in cache
         const product = await Product.find({event: event});
+        await redisClient.setEx(cacheKey, 3600, JSON.stringify(product));
+
+        const end = Date.now(); 
+        console.log(`Response time: ${end - start} ms`); // Log the response time
 
         return res.status(200).json({product});
     } catch (error) {
